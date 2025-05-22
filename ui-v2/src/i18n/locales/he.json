@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "גוס",
+    "description": "סוכן AI מקומי, הניתן להרחבה, בקוד פתוח שמאפשר אוטומציה של משימות הנדסיות"
+  },
+  "navigation": {
+    "home": "בית",
+    "settings": "הגדרות",
+    "chats": "צ'אטים"
+  },
+  "chat": {
+    "newChat": "צ'אט חדש",
+    "addPreviousChat": "הוסף צ'אט קודם",
+    "send": "שלח",
+    "placeholder": "הקלד את ההודעה שלך כאן..."
+  },
+  "settings": {
+    "language": "שפה",
+    "theme": "ערכת נושא",
+    "workDirectories": "תיקיות עבודה",
+    "addDirectory": "הוסף תיקייה",
+    "removeDirectory": "הסר תיקייה",
+    "selectDirectory": "בחר תיקייה"
+  },
+  "tts": {
+    "start": "התחל דיבור",
+    "stop": "הפסק דיבור"
+  }
+}
