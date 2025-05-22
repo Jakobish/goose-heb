@@ -4,6 +4,7 @@ import { RouterProvider } from '@tanstack/react-router';
 import ReactDOM from 'react-dom/client';
 
 import { router } from './routeTree';
+import './i18n/i18n'; // Import i18n configuration
 
 import './styles/main.css';
 

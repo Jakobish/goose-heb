@@ -1,22 +1,27 @@
 import React, { Suspense } from 'react';
-
 import { Outlet } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 
 import SuspenseLoader from './components/SuspenseLoader';
+import RTLProvider from './i18n/RTLProvider';
 
 const App: React.FC = (): React.ReactElement => {
+  const { t } = useTranslation();
+  
   return (
-    <div className="">
-      <div className="titlebar-drag-region" />
-      <div className="h-10 w-full" />
+    <RTLProvider>
       <div className="">
+        <div className="titlebar-drag-region" />
+        <div className="h-10 w-full" />
         <div className="">
-          <Suspense fallback={<SuspenseLoader />}>
-            <Outlet />
-          </Suspense>
+          <div className="">
+            <Suspense fallback={<SuspenseLoader />}>
+              <Outlet />
+            </Suspense>
+          </div>
         </div>
       </div>
-    </div>
+    </RTLProvider>
   );
 };
 

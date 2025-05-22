@@ -1,0 +1,32 @@
+/* RTL Support Styles */
+html[dir="rtl"] {
+  text-align: right;
+}
+
+/* Flip padding and margins for RTL */
+html[dir="rtl"] .rtl-flip {
+  direction: rtl;
+}
+
+/* Flip icons and UI elements that need mirroring in RTL */
+html[dir="rtl"] .rtl-mirror {
+  transform: scaleX(-1);
+}
+
+/* Adjust input fields for RTL */
+html[dir="rtl"] input,
+html[dir="rtl"] textarea {
+  text-align: right;
+}
+
+/* Adjust button icons for RTL */
+html[dir="rtl"] .button-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Adjust dropdown menus for RTL */
+html[dir="rtl"] .dropdown-menu {
+  right: 0;
+  left: auto;
+}
