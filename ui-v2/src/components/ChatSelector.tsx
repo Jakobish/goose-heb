@@ -18,6 +18,7 @@ const ChatSelector: React.FC<ChatSelectorProps> = ({
 }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [notification, setNotification] = useState<string | null>(null);
   
   // Filter out the current chat from the selection list
   const selectableChats = chats.filter(chat => chat.id !== currentChatId);
@@ -25,6 +26,15 @@ const ChatSelector: React.FC<ChatSelectorProps> = ({
   if (selectableChats.length === 0) {
     return null; // Don't render if there are no other chats to select
   }
+  
+  const handleSelectChat = (chatId: string) => {
+    const result = onSelectChat(chatId);
+    if (result) {
+      setNotification(result);
+      setTimeout(() => setNotification(null), 3000); // Clear notification after 3 seconds
+    }
+    setIsOpen(false);
+  };
   
   return (
     <div className="relative">
@@ -51,22 +61,28 @@ const ChatSelector: React.FC<ChatSelectorProps> = ({
         </svg>
       </button>
       
+      {notification && (
+        <div className="absolute top-full right-0 mt-2 px-3 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 rounded-md text-sm z-20">
+          {notification}
+        </div>
+      )}
+      
       {isOpen && (
-        <div className="absolute z-10 mt-1 w-56 rounded-md shadow-lg bg-popover border border-border">
+        <div className="absolute z-10 mt-1 w-64 rounded-md shadow-lg bg-popover border border-border">
           <div className="py-1" role="menu" aria-orientation="vertical">
             {selectableChats.map(chat => (
               <button
                 key={chat.id}
-                onClick={() => {
-                  onSelectChat(chat.id);
-                  setIsOpen(false);
-                }}
+                onClick={() => handleSelectChat(chat.id)}
                 className="w-full text-left px-4 py-2 text-sm hover:bg-accent transition-colors"
                 role="menuitem"
               >
                 <div className="font-medium truncate">{chat.title}</div>
                 <div className="text-xs text-muted-foreground truncate">
                   {new Date(chat.updatedAt).toLocaleString()}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  {chat.messages.length} messages
                 </div>
               </button>
             ))}

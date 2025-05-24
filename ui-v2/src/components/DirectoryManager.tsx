@@ -10,6 +10,7 @@ interface DirectoryManagerProps {
 
 /**
  * DirectoryManager component for adding and removing work directories
+ * without needing to create a new chat session
  */
 const DirectoryManager: React.FC<DirectoryManagerProps> = ({
   directories,
@@ -21,6 +22,7 @@ const DirectoryManager: React.FC<DirectoryManagerProps> = ({
   const [newPath, setNewPath] = useState('');
   const [newName, setNewName] = useState('');
   const [error, setError] = useState('');
+  const [notification, setNotification] = useState<string | null>(null);
 
   const handleAddDirectory = () => {
     if (!newPath) {
@@ -33,13 +35,27 @@ const DirectoryManager: React.FC<DirectoryManagerProps> = ({
       setNewPath('');
       setNewName('');
       setError('');
+      setNotification('Directory added successfully');
+      setTimeout(() => setNotification(null), 3000); // Clear notification after 3 seconds
     } else {
       setError('Directory already exists');
     }
   };
 
+  const handleRemoveDirectory = (id: string, name: string) => {
+    onRemoveDirectory(id);
+    setNotification(`Directory "${name}" removed`);
+    setTimeout(() => setNotification(null), 3000); // Clear notification after 3 seconds
+  };
+
   return (
-    <div className="border border-border rounded-lg p-4">
+    <div className="border border-border rounded-lg p-4 relative">
+      {notification && (
+        <div className="absolute top-0 right-0 mt-2 mr-2 px-3 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 rounded-md text-sm z-10">
+          {notification}
+        </div>
+      )}
+      
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-medium">{t('settings.workDirectories')}</h2>
         <button
@@ -79,16 +95,29 @@ const DirectoryManager: React.FC<DirectoryManagerProps> = ({
             />
           </div>
           {error && <p className="text-destructive text-sm mb-3">{error}</p>}
-          <button
-            onClick={handleAddDirectory}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity"
-          >
-            {t('settings.addDirectory')}
-          </button>
+          <div className="flex justify-between">
+            <button
+              onClick={handleAddDirectory}
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity"
+            >
+              {t('settings.addDirectory')}
+            </button>
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                setNewPath('');
+                setNewName('');
+                setError('');
+              }}
+              className="px-4 py-2 border border-border rounded-md hover:bg-accent transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       )}
 
-      <div className="space-y-2">
+      <div className="space-y-2 max-h-[400px] overflow-y-auto">
         {directories.length === 0 ? (
           <p className="text-muted-foreground text-sm">No work directories added</p>
         ) : (
@@ -100,9 +129,12 @@ const DirectoryManager: React.FC<DirectoryManagerProps> = ({
               <div>
                 <div className="font-medium">{dir.name}</div>
                 <div className="text-sm text-muted-foreground">{dir.path}</div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  Added: {new Date(dir.addedAt).toLocaleString()}
+                </div>
               </div>
               <button
-                onClick={() => onRemoveDirectory(dir.id)}
+                onClick={() => handleRemoveDirectory(dir.id, dir.name)}
                 className="p-1 text-muted-foreground hover:text-destructive transition-colors"
                 aria-label={t('settings.removeDirectory')}
                 title={t('settings.removeDirectory')}

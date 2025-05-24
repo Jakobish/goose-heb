@@ -20,13 +20,24 @@ const TestPage: React.FC = () => {
       ]
     },
     {
-      name: 'Microphone TTS Feature',
+      name: 'Speech-to-Text (Microphone)',
+      description: 'Tests the Speech-to-Text functionality using microphone',
+      instructions: [
+        'Click the microphone button in the chat input',
+        'Speak into your microphone',
+        'Verify your speech is converted to text in the input field',
+        'Click the microphone button again to stop listening'
+      ]
+    },
+    {
+      name: 'Text-to-Speech (Speaker)',
       description: 'Tests the Text-to-Speech functionality',
       instructions: [
         'Type some text in the chat input',
-        'Click the microphone button to hear the text spoken',
+        'Click the speaker button to hear the text spoken',
         'Click again to stop the speech',
-        'Try with different languages to test language detection'
+        'Try with different languages to test language detection',
+        'Check that assistant messages have speaker buttons for TTS'
       ]
     },
     {

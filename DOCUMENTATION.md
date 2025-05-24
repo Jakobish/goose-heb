@@ -1,134 +1,153 @@
 # Goose Repository Enhancement Documentation
 
 ## Overview
-This document provides comprehensive documentation for the enhancements made to the Goose repository. Four major features have been implemented:
+
+This document provides comprehensive documentation for the enhancements made to the Goose repository. The following features have been implemented:
 
 1. Hebrew RTL (Right-to-Left) support
-2. Microphone feature for Text-to-Speech (TTS)
-3. Option to add a previous chat to the current chat
+2. Speech features: Speech-to-Text (STT) with microphone and Text-to-Speech (TTS) with speaker
+3. Option to add previous chats to the current chat
 4. Option to add/remove work directories without creating a new chat session
 
 ## Dependencies Added
 
-The following dependencies were added to the project:
+The following dependencies have been added to the project:
 
-```
-react-i18next: For internationalization and RTL support
-i18next: Core i18next library
-i18next-browser-languagedetector: For automatic language detection
-```
-
-These can be installed via npm:
-
-```bash
-npm install react-i18next i18next i18next-browser-languagedetector
+```json
+{
+  "dependencies": {
+    "react-i18next": "^12.2.0",
+    "i18next": "^22.4.10",
+    "i18next-browser-languagedetector": "^7.0.1"
+  }
+}
 ```
 
-## Feature Implementation Details
+## Feature Documentation
 
 ### 1. Hebrew RTL Support
 
-#### Files Created/Modified:
-- `/src/i18n/i18n.ts`: Main i18n configuration
+#### Implementation Details
+
+- Added internationalization framework using react-i18next
+- Created translation files for English and Hebrew
+- Implemented RTL support for Hebrew language
+- Added language switcher component
+
+#### Key Files
+
+- `/src/i18n/i18n.ts`: Configuration for i18next
 - `/src/i18n/locales/en.json`: English translations
 - `/src/i18n/locales/he.json`: Hebrew translations
-- `/src/i18n/RTLProvider.tsx`: Component to handle RTL/LTR direction changes
-- `/src/styles/rtl.css`: RTL-specific styles
-- `/src/styles/main.css`: Updated to import RTL styles
-- `/src/App.tsx`: Updated to use RTLProvider
-- `/src/main.tsx`: Updated to import i18n configuration
-- `/src/components/LanguageSwitcher.tsx`: Component for switching languages
+- `/src/i18n/RTLProvider.tsx`: Component to handle RTL direction
+- `/src/styles/rtl.css`: CSS for RTL support
+- `/src/components/LanguageSwitcher.tsx`: UI for switching languages
 
-#### Implementation Details:
-- Added i18n infrastructure with support for English and Hebrew
-- Created RTLProvider to dynamically change document direction based on language
-- Added RTL-specific CSS for proper text alignment and UI mirroring
-- Integrated language switching functionality
-- Ensured all UI components respect RTL direction when Hebrew is selected
+#### Usage
 
-### 2. Microphone Text-to-Speech Feature
+The language can be switched using the LanguageSwitcher component. When Hebrew is selected, the application automatically switches to RTL mode, affecting text direction and UI layout.
 
-#### Files Created/Modified:
+### 2. Speech Features
+
+#### Implementation Details
+
+- **Speech-to-Text (STT)**: Implemented using the Web Speech API's SpeechRecognition interface
+- **Text-to-Speech (TTS)**: Implemented using the Web Speech API's SpeechSynthesis interface
+- Created separate components for microphone (STT) and speaker (TTS) buttons
+- Integrated both features into the chat interface
+
+#### Key Files
+
+- `/src/hooks/useSTT.ts`: Hook for Speech-to-Text functionality
 - `/src/hooks/useTTS.ts`: Hook for Text-to-Speech functionality
-- `/src/components/MicrophoneButton.tsx`: UI component for the microphone button
-- `/src/components/ChatInput.tsx`: Chat input with integrated microphone button
+- `/src/components/MicrophoneButton.tsx`: UI component for STT
+- `/src/components/SpeakerButton.tsx`: UI component for TTS
+- `/src/components/ChatInput.tsx`: Integration of speech features into chat input
+- `/src/components/ChatMessage.tsx`: Integration of TTS for assistant messages
 
-#### Implementation Details:
-- Implemented Web Speech API integration for cross-browser compatibility
-- Created a reusable hook (useTTS) for TTS functionality
-- Added language-aware voice selection based on current i18n language
-- Implemented play/stop functionality with appropriate UI feedback
-- Integrated the microphone button into the chat input interface
+#### Usage
+
+- **Speech-to-Text**: Click the microphone button in the chat input to start listening. Speak into your microphone, and your speech will be converted to text in the input field. Click again to stop listening.
+- **Text-to-Speech**: Click the speaker button next to the chat input to have your message read aloud. Assistant messages also have speaker buttons to read their content.
 
 ### 3. Previous Chat Integration
 
-#### Files Created/Modified:
-- `/src/hooks/useChatHistory.ts`: Hook for managing chat history and merging
-- `/src/components/ChatSelector.tsx`: UI for selecting previous chats
-- `/src/components/ChatInterface.tsx`: Main chat interface with merge functionality
+#### Implementation Details
 
-#### Implementation Details:
-- Created a chat history management system with mock data
-- Implemented functionality to merge previous chats into the current chat
-- Added a dropdown UI for selecting previous chats to merge
-- Ensured clear visual indication when chats are merged
-- Maintained chat context and continuity during merges
+- Enhanced chat history management to support merging chats
+- Added UI for selecting previous chats to add to the current chat
+- Implemented visual indicators for merged chat content
+- Added success notifications for user feedback
+
+#### Key Files
+
+- `/src/hooks/useChatHistory.ts`: Hook for chat history and merging functionality
+- `/src/components/ChatSelector.tsx`: UI for selecting previous chats
+- `/src/components/ChatInterface.tsx`: Integration of chat selection and display
+
+#### Usage
+
+Click the "Add Previous Chat" button in the chat interface to see a dropdown of available previous chats. Select a chat to add its messages to the current chat. A system message will indicate where the previous chat was merged, and a notification will confirm the action.
 
 ### 4. Work Directory Management
 
-#### Files Created/Modified:
-- `/src/hooks/useWorkDirectories.ts`: Hook for managing work directories
-- `/src/components/DirectoryManager.tsx`: UI for adding/removing directories
-- `/src/components/MainApp.tsx`: Main application component integrating all features
+#### Implementation Details
 
-#### Implementation Details:
-- Implemented directory management with add/remove functionality
-- Created a user-friendly interface for directory operations
-- Ensured directory changes don't interrupt the current chat session
-- Added validation to prevent duplicate directories
-- Integrated directory management into the main application layout
+- Created a directory management system that works without disrupting the current chat
+- Implemented add/remove functionality with validation
+- Added user notifications for successful actions
+- Ensured the UI updates immediately to reflect changes
 
-## Integration
+#### Key Files
 
-All features have been integrated into a cohesive application structure:
+- `/src/hooks/useWorkDirectories.ts`: Hook for directory management
+- `/src/components/DirectoryManager.tsx`: UI for managing directories
+- `/src/components/MainApp.tsx`: Integration of directory management
 
-- `MainApp.tsx` serves as the container component that brings together all features
-- RTL support affects the entire application UI
-- The microphone button is integrated into the chat input
-- Chat selection is available in the chat interface header
-- Directory management is accessible in the sidebar
+#### Usage
+
+In the work directories section, click "Add Directory" to open a form. Enter a directory path and optional display name, then submit. The directory will be added without affecting the current chat. To remove a directory, click the trash icon next to it.
 
 ## Testing
 
-A dedicated test page (`TestPage.tsx`) has been created to facilitate testing of all new features. It provides step-by-step instructions for verifying each feature's functionality.
+Comprehensive tests have been implemented to ensure all features work correctly:
 
-## Usage Instructions
+- `/src/test/FeatureIntegration.test.tsx`: Integration tests for all features
+- `/src/test/SpeechFeatures.test.tsx`: Specific tests for STT and TTS functionality
+- `/src/test/ChatSelector.test.tsx`: Tests for previous chat integration
 
-### Hebrew RTL Support
-- Use the language switcher in the header to toggle between English and Hebrew
-- The UI will automatically adjust direction and text alignment based on the selected language
+## Browser Compatibility
 
-### Microphone TTS Feature
-- Type text in the chat input
-- Click the microphone button to hear the text spoken
-- Click again to stop the speech
-- The voice will automatically adapt to the selected language
+The speech features use the Web Speech API, which has varying levels of support across browsers:
 
-### Previous Chat Integration
-- Use the "Add Previous Chat" dropdown in the chat interface header
-- Select a previous chat to merge into the current conversation
-- A system message will indicate where the merged chat begins
+- Chrome/Edge: Full support for both STT and TTS
+- Firefox: Good support for TTS, limited support for STT
+- Safari: Good support for TTS, limited support for STT
 
-### Work Directory Management
-- Use the directory manager in the sidebar
-- Click "Add Directory" to show the form
-- Enter a directory path and optional display name
-- Click "Add Directory" to add it to the list
-- Click the trash icon to remove a directory
+For best results, use Chrome or Edge.
 
 ## Future Considerations
 
-- Persistence: Currently using mock data; should be connected to actual storage
-- Voice selection: Add UI for manually selecting preferred voices
-- Chat export/import: Consider adding functionality to export and import chat history
-- Directory browsing: Add ability to browse and select directories visually
+1. **Offline Support**: Consider adding offline support for speech features using downloadable models
+2. **Additional Languages**: Extend RTL support to other RTL languages like Arabic
+3. **Voice Selection**: Add UI for selecting different voices for TTS
+4. **Improved STT Accuracy**: Implement custom language models for better speech recognition
+
+## Troubleshooting
+
+### Speech Features Not Working
+
+1. Ensure your browser supports the Web Speech API
+2. Check that microphone permissions are granted
+3. Try using Chrome or Edge for best compatibility
+4. Ensure you're in a quiet environment for better STT accuracy
+
+### RTL Display Issues
+
+1. Clear browser cache and reload
+2. Ensure the RTL CSS is properly loaded
+3. Check for any CSS conflicts in developer tools
+
+## Conclusion
+
+These enhancements significantly improve the usability and accessibility of the Goose application. The implementation follows best practices for React development and ensures a seamless user experience across different languages and interaction methods.

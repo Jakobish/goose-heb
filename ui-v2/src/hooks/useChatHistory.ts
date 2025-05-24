@@ -11,7 +11,7 @@ export interface Chat {
 export interface ChatMessage {
   id: string;
   content: string;
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'system';
   timestamp: Date;
 }
 
@@ -66,6 +66,32 @@ export const useChatHistory = () => {
         ],
         createdAt: new Date(Date.now() - 43200000),
         updatedAt: new Date(Date.now() - 43100000)
+      },
+      {
+        id: '3',
+        title: 'JavaScript Help',
+        messages: [
+          {
+            id: '3-1',
+            content: 'How can I assist you with JavaScript?',
+            role: 'assistant',
+            timestamp: new Date(Date.now() - 21600000) // 6 hours ago
+          },
+          {
+            id: '3-2',
+            content: 'I need help with async/await',
+            role: 'user',
+            timestamp: new Date(Date.now() - 21500000)
+          },
+          {
+            id: '3-3',
+            content: 'Async/await is a way to handle promises in JavaScript. Would you like me to explain with examples?',
+            role: 'assistant',
+            timestamp: new Date(Date.now() - 21400000)
+          }
+        ],
+        createdAt: new Date(Date.now() - 21600000),
+        updatedAt: new Date(Date.now() - 21400000)
       }
     ];
     
@@ -91,7 +117,7 @@ export const useChatHistory = () => {
   };
   
   // Add a message to the current chat
-  const addMessage = (content: string, role: 'user' | 'assistant') => {
+  const addMessage = (content: string, role: 'user' | 'assistant' | 'system') => {
     if (!currentChat) return;
     
     const newMessage: ChatMessage = {
@@ -139,11 +165,12 @@ export const useChatHistory = () => {
         {
           id: `merge-${Date.now()}`,
           content: `--- Previous chat "${previousChat.title}" added ---`,
-          role: 'assistant' as const,
+          role: 'system' as const,
           timestamp: new Date()
         },
         ...previousChat.messages
       ],
+      title: `${currentChat.title} + ${previousChat.title}`,
       updatedAt: new Date()
     };
     
@@ -153,6 +180,9 @@ export const useChatHistory = () => {
         chat.id === mergedChat.id ? mergedChat : chat
       )
     );
+    
+    // Return success message
+    return `Successfully added "${previousChat.title}" to the current chat.`;
   };
   
   return {

@@ -22,8 +22,12 @@
     "removeDirectory": "Remove Directory",
     "selectDirectory": "Select Directory"
   },
+  "stt": {
+    "start": "Start Listening",
+    "stop": "Stop Listening"
+  },
   "tts": {
-    "start": "Start Speaking",
-    "stop": "Stop Speaking"
+    "start": "Read Text Aloud",
+    "stop": "Stop Reading"
   }
 }

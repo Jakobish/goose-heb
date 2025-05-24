@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import useChatHistory from '../hooks/useChatHistory';
 import ChatInput from './ChatInput';
 import ChatSelector from './ChatSelector';
+import ChatMessage from './ChatMessage';
 
 /**
  * ChatInterface component that integrates chat history, input, and previous chat selection
@@ -43,16 +44,12 @@ const ChatInterface: React.FC = () => {
       
       <div className="flex-1 overflow-y-auto p-4">
         {currentChat.messages.map(message => (
-          <div 
+          <ChatMessage 
             key={message.id} 
-            className={`mb-4 p-3 rounded-lg max-w-3/4 ${
-              message.role === 'user' 
-                ? 'ml-auto bg-primary text-primary-foreground' 
-                : 'bg-muted'
-            }`}
-          >
-            {message.content}
-          </div>
+            content={message.content}
+            role={message.role}
+            timestamp={message.timestamp}
+          />
         ))}
       </div>
       
