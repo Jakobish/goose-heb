@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "Goose",
+    "description": "A local, extensible, open source AI agent that automates engineering tasks"
+  },
+  "navigation": {
+    "home": "Home",
+    "settings": "Settings",
+    "chats": "Chats"
+  },
+  "chat": {
+    "newChat": "New Chat",
+    "addPreviousChat": "Add Previous Chat",
+    "send": "Send",
+    "placeholder": "Type your message here..."
+  },
+  "settings": {
+    "language": "Language",
+    "theme": "Theme",
+    "workDirectories": "Work Directories",
+    "addDirectory": "Add Directory",
+    "removeDirectory": "Remove Directory",
+    "selectDirectory": "Select Directory"
+  },
+  "tts": {
+    "start": "Start Speaking",
+    "stop": "Stop Speaking"
+  }
+}
